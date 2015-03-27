@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,10 +8,13 @@
 
         var messageId = -1;
 
-        function sendMessage() {
+        function sendMessage(e) {
             var ret;
-            var data = {username : $("#username").val(), message : $("#sendMessage").val()};
-            $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
+            if(e.keyCode = 13 ) {
+                var data = {username : $("#userId").val(), message : $("#sendMessage").val()};
+                $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
+                $("#sendMessage").val('') ;
+            }
         }
 
 
@@ -21,11 +26,13 @@
 
         function appendMessage (responseText,statusTxt, xhr ) {
 
-            $("#chat-box").append(responseText);
+            if(responseText.length > 0) {
+                $("#chat-box").append(responseText);
 
-            var messages = $("#chat-box").children();
+                var messages = $("#chat-box").children();
 
-            messageId = messages[messages.length -1].id;
+                messageId = messages[messages.length -1].id;
+            }
         }
 
         setInterval(function () {
@@ -39,7 +46,7 @@
 
 
     <meta charset="UTF-8">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>ChatService | Chat Room</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- Bootstrap 3.3.2 -->
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -78,10 +85,10 @@
     <div class="item">
         <p class="message">
             <a href="#" class="name">
-                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                Namechat
+                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i><c:out value="${Date}" /></small>
+                User name : ${user.fullName}
+                <input id="userId" type="hidden" value="${user.id}"/>
             </a>
-            <input id="username"  placeholder="enter your name..." />
         </p>
 
     </div><!-- /.item -->
@@ -124,7 +131,7 @@
 
             <div class="box-footer">
                 <div class="input-group">
-                    <input class="form-control" placeholder="Type message..."  id="sendMessage" />
+                    <input class="form-control" placeholder="Type message..."  id="sendMessage" onkeypress="sendMessage()" />
                     <div class="input-group-btn">
                         <button class="btn btn-success" onclick="sendMessage();" ><i class="fa fa-plus"></i></button>
                     </div>

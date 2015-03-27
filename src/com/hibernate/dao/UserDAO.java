@@ -43,7 +43,7 @@ public class UserDAO {
         }
     }
 
-    public static boolean authenticateUser(User user) {
+    public static User authenticateUser(User user) {
 
         Session session = sessionFactory.openSession();
 
@@ -52,25 +52,16 @@ public class UserDAO {
 
             User authenticatedUser  = (User) session.createCriteria(User.class).add(Example.create(user)).uniqueResult();
 
-            user.setFullName(authenticatedUser.getFullName());
-            user.setId(authenticatedUser.getId());
-            user.setEmail(authenticatedUser.getEmail());
-            user.setMessagesForFromUser(authenticatedUser.getMessagesForFromUser());
-            user.setMessagesForToUser(authenticatedUser.getMessagesForToUser());
             session.getTransaction().commit();
             session.close();
 
-            if(authenticatedUser != null) {
-                return true;
-            } else {
-                return false;
-            }
+            return authenticatedUser;
 
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
             session.close();
             ex.printStackTrace();
-            return false;
+            return null;
         }
 
     }

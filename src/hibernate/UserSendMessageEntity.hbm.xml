@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.UserSendMessageEntity" table="User_send_Message" schema="" catalog="Chat_DB">
+        <id name="id">
+            <column name="id" sql-type="int" not-null="true"/>
+        </id>
+        <property name="time">
+            <column name="time" sql-type="datetime"/>
+        </property>
+        <many-to-one name="userByFromUser" class="com.UserEntity">
+            <column name="fromUser" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="messageByMessageId" class="com.MessageEntity">
+            <column name="Message_id" not-null="true"/>
+        </many-to-one>
+        <many-to-one name="userByToUser" class="com.UserEntity">
+            <column name="toUser" not-null="true"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -7,7 +7,7 @@
     <!-- Bootstrap 3.3.2 -->
     <link href="${pageContext.request.contextPath}/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Font Awesome Icons -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/dist/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <!-- Theme style -->
     <link href="${pageContext.request.contextPath}/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
     <!-- iCheck -->
@@ -16,8 +16,8 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <script src="${pageContext.request.contextPath}/dist/js/html5shiv.js"></script>
+        <script src="${pageContext.request.contextPath}/dist/js/respond.min.js"></script>
     <![endif]-->
 
     <script type="application/javascript">
@@ -46,7 +46,7 @@
 
       <div class="register-box-body">
         <p class="login-box-msg">Register a new membership</p>
-        <form action="${pageContext.request.contextPath}/chat/RegisterServlet" method="post"  >
+        <form action="${pageContext.request.contextPath}/RegisterServlet" method="post"  >
           <div class="form-group has-feedback">
             <input name="fullName" type="text" class="form-control" required="true" placeholder="Full name"/>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>

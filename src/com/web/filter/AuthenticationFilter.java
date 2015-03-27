@@ -22,16 +22,16 @@ public class AuthenticationFilter implements Filter {
 
         HttpSession session = ((HttpServletRequest) request).getSession(false);
 
-//        if(session != null) {
-//            User user = (User) session.getAttribute("user");
-//             if(user != null) {
+        if(session != null) {
+            User user = (User) session.getAttribute("user");
+             if(user != null) {
                  chain.doFilter(request, response);
-//             } else {
-//                 ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath()+"/login.jsp");
-//             }
-//        } else {
-//            ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath()+"/login.jsp");
-//        }
+             } else {
+                 ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath()+"/login.jsp");
+             }
+        } else {
+            ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath()+"/login.jsp");
+        }
 
     }
 

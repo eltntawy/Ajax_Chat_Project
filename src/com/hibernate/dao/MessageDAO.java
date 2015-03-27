@@ -1,10 +1,11 @@
 package com.hibernate.dao;
 
-import com.hibernate.pojo.Message;
-import com.hibernate.pojo.User;
+import com.hibernate.pojo.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.util.List;
 
 /**
  * Created by eltntawy on 27/03/15.
@@ -35,8 +36,27 @@ public class MessageDAO {
             return true;
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
+            session.close();
             ex.printStackTrace();
             return false;
+        }
+    }
+
+    public static List<Message> loadAllMessage() {
+        Session session = sessionFactory.openSession();
+
+        try {
+            session.beginTransaction();
+
+            List<Message> messages = session.createCriteria(Message.class).list();
+
+            session.getTransaction().commit();
+            return messages;
+        } catch (HibernateException ex) {
+            session.getTransaction().rollback();
+            session.close();
+            ex.printStackTrace();
+            return null;
         }
     }
 }

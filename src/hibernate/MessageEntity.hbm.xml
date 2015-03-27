@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.MessageEntity" table="Message" schema="" catalog="Chat_DB">
+        <id name="id">
+            <column name="id" sql-type="int" not-null="true"/>
+        </id>
+        <property name="message">
+            <column name="message" sql-type="varchar" length="45"/>
+        </property>
+        <set name="userSendMessagesById" inverse="true">
+            <key>
+                <column name="Message_id" not-null="true"/>
+            </key>
+            <one-to-many not-found="ignore" class="com.UserSendMessageEntity"/>
+        </set>
+    </class>
+</hibernate-mapping>
