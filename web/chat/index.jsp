@@ -9,14 +9,14 @@
         function sendMessage() {
             var ret;
             var data = {username : $("#username").val(), message : $("#sendMessage").val()};
-            $.post("${pageContext.request.contextPath}/ChatServlet",data,ret);
+            $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
         }
 
 
         function receiveMessages() {
             var ret;
 
-            $.get("${pageContext.request.contextPath}/ChatServlet?messageId="+messageId,appendMessage);
+            $.get("${pageContext.request.contextPath}/chat/ChatServlet?messageId="+messageId,appendMessage);
         }
 
         function appendMessage (responseText,statusTxt, xhr ) {
