@@ -84,7 +84,18 @@
     <![endif]-->
 </head>
 <body class="skin-blue" id="body">
+
+
+<div class="register-box span6">
+    <div class="register-logo">
+        <a href="${pageContext.request.contextPath}"><b>Chat</b>Service</a>
+    </div>
+
+    <div class="register-box-body">
+        <p class="login-box-msg"> Have fun with our chat service</p>
+
 <div >
+
 
     <div class="item">
         <p class="message">
@@ -146,7 +157,9 @@
 
 
     </div><!-- /.content-wrapper -->
-
+</div>
+    </div>
+</div>
     <!-- jQuery 2.1.3 -->
     <script src="${pageContext.request.contextPath}/plugins/jQuery/jQuery-2.1.3.min.js"></script>
     <!-- jQuery UI 1.11.2 -->

@@ -30,7 +30,7 @@ public class ChatServlet extends HttpServlet {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        if(user != null) {
+        if(user != null && msgStr != null && msgStr.split(" ").length > 0) {
             System.out.println("message : " + msgStr);
 
             Message msg = new Message();
