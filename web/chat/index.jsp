@@ -19,6 +19,8 @@
                 $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
                 $("#sendMessage").val('') ;
             }
+
+            receiveMessages();
         }
 
 
@@ -83,10 +85,10 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="skin-blue" id="body">
+<body class="login-page" id="body">
 
 
-<div class="register-box span6">
+<div class="register-box span11">
     <div class="register-logo">
         <a href="${pageContext.request.contextPath}"><b>Chat</b>Service</a>
     </div>
@@ -118,12 +120,12 @@
             <div class="box-header">
                 <i class="fa fa-comments-o"></i>
                 <h3 class="box-title">Chat</h3>
-                <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
-                    <div class="btn-group" data-toggle="btn-toggle" >
-                        <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>
-                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
-                    </div>
-                </div>
+                <%--<div class="box-tools pull-right" data-toggle="tooltip" title="Status">--%>
+                    <%--<div class="btn-group" data-toggle="btn-toggle" >--%>
+                        <%--<button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>--%>
+                        <%--<button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
             </div>
             <div class="box-body chat" id="chat-box">
 
