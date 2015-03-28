@@ -38,6 +38,7 @@
                 var messages = $("#chat-box").children();
 
                 messageId = messages[messages.length -1].id;
+                $("#chat-box").scrollTop;
             }
         }
 
