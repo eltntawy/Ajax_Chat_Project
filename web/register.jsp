@@ -24,15 +24,26 @@
 
       function checkRegisterForm() {
 
-        if($("#password1").value === $("#password2").value) {
+        if($("#password1").val() === $("#password2").val()) {
           if ($("#argument").is(":checked") ) {
             return true;
           } else {
+            $("#argumentFeedback").val("please check the argument checkbox");
             return false;
           }
         }  else {
+          $("#passwordFeedback").val("password dose not match");
           return false;
         }
+      }
+
+      function checkEmail () {
+        var email = $("#email").val();
+        $.get('${pageContext.request.contextPath}/RegisterServlet?email='+email,function(responseText,statusTxt, xhr) {
+
+          document.getElementById('emailFeedback').innerHTML = responseText;
+          $('#emailFeedback').attr('style','color : red');
+        });
       }
 
     </script>
@@ -50,10 +61,12 @@
           <div class="form-group has-feedback">
             <input name="fullName" type="text" class="form-control" required="true" placeholder="Full name"/>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span id="fullNameFeedback" ></span>
           </div>
           <div class="form-group has-feedback">
-            <input name="email" type="email" class="form-control" required="ture"  placeholder="Email"/>
-            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <input id="email" sname="email" type="email" class="form-control" required="ture"  placeholder="Email" onkeyup="checkEmail()" />
+            <span  class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            <span id="emailFeedback"></span>
           </div>
           <div class="form-group has-feedback">
             <input id="password1" name="password" type="password" class="form-control" required="true" placeholder="Password"/>
@@ -62,12 +75,14 @@
           <div class="form-group has-feedback">
             <input id="password2" name="password" type="password" class="form-control" required="true" placeholder="Retype password"/>
             <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            <span id="passwordFeedback" ></span>
           </div>
           <div class="row">
             <div class="col-xs-8">    
               <div class="checkbox icheck">
                 <label>
                   <input id="argument" name="argument" type="checkbox" required="true"> I agree to the <a href="#">terms</a>
+                  <span id="argumentFeedback" ></span>
                 </label>
               </div>                        
             </div><!-- /.col -->

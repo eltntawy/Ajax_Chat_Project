@@ -10,7 +10,11 @@
 
         function sendMessage(e) {
             var ret;
-            if(e.keyCode = 13 ) {
+            if( e != null && e.keyCode == 13 && $("#sendMessage").val() != '' ) {
+                var data = {username : $("#userId").val(), message : $("#sendMessage").val()};
+                $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
+                $("#sendMessage").val('') ;
+            } else if( e == null && $("#sendMessage").val() != '') {
                 var data = {username : $("#userId").val(), message : $("#sendMessage").val()};
                 $.post("${pageContext.request.contextPath}/chat/ChatServlet",data,ret);
                 $("#sendMessage").val('') ;
@@ -131,7 +135,8 @@
 
             <div class="box-footer">
                 <div class="input-group">
-                    <input class="form-control" placeholder="Type message..."  id="sendMessage" onkeypress="sendMessage()" />
+                    <input class="form-control" placeholder="Type message..."  id="sendMessage"
+                           onkeypress="return sendMessage(event);" />
                     <div class="input-group-btn">
                         <button class="btn btn-success" onclick="sendMessage();" ><i class="fa fa-plus"></i></button>
                     </div>

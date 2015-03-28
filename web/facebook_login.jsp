@@ -22,11 +22,37 @@
                             friends += user.id + ' - '+ user.name+'\n';
                         }
 
-                        document.getElementById('status').innerHTML = friends;
+                        document.getElementById('friends').innerHTML = friends;
                     });
 
                 } else {
                     document.getElementById("friends").innerHTML = 'Not Connected';
+                }
+
+            });
+        }
+
+        function getProfileInfo() {
+            FB.getLoginStatus(function(response) {
+
+                if(response.status = 'connected') {
+
+                    var access_token = response.authResponse.accessToken;
+                    var userId = response.authResponse.userID;
+
+                    FB.api('/'+userId+'?access_token='+access_token, function(response) {
+                        console.log('Successful login for: ' + response.name);
+                        var info = 'First Name : '+response.first_name +'<br/>';
+                        info += 'Last Name : '+ response.last_name+'<br/>';
+                        info += 'email : '+response.email+'<br/>';
+                        info += 'gender : '+response.gender+'<br/>'
+                        info += 'profile link : '+response.link+'<br/>';
+
+                        document.getElementById('info').innerHTML = info;
+                    });
+
+                } else {
+                    document.getElementById("info").innerHTML = 'Not Connected';
                 }
 
             });
@@ -147,10 +173,13 @@
 <input type="button" value="statusChangeCallback"  onclick="alert(statusChangeCallback());" />
 
 <input type="button" value="getFriendsList" onclick="getFriendsList()"/>
+<input type="button" value="Get Info" onclick="getProfileInfo()"/>
 
 <div id="firends">
 
 </div>
+
+<div id="info"></div>
 
 </body>
 </html>

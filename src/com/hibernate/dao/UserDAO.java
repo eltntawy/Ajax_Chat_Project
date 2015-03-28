@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Example;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -14,9 +15,11 @@ import java.util.List;
 public class UserDAO {
 
     private static SessionFactory sessionFactory;
-
+    private static Session session ;
     protected UserDAO(SessionFactory sessionFactory) {
+
         this.sessionFactory = sessionFactory;
+        session = sessionFactory.openSession();
     }
 
     public SessionFactory getSessionFactory(SessionFactory sessionFactory) {
@@ -25,7 +28,7 @@ public class UserDAO {
 
 
     public static boolean saveNewUser(User user) {
-        Session session = sessionFactory.openSession();
+
 
         try {
             session.beginTransaction();
@@ -33,11 +36,11 @@ public class UserDAO {
             session.persist(user);
 
             session.getTransaction().commit();
-            session.close();
+
             return true;
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
-            session.close();
+
             ex.printStackTrace();
             return false;
         }
@@ -45,7 +48,6 @@ public class UserDAO {
 
     public static User authenticateUser(User user) {
 
-        Session session = sessionFactory.openSession();
 
         try {
             session.beginTransaction();
@@ -53,17 +55,36 @@ public class UserDAO {
             User authenticatedUser  = (User) session.createCriteria(User.class).add(Example.create(user)).uniqueResult();
 
             session.getTransaction().commit();
-            session.close();
+
 
             return authenticatedUser;
 
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
-            session.close();
+
             ex.printStackTrace();
             return null;
         }
 
+    }
+
+
+    public static boolean isAvailableEmail(String email) {
+        try {
+            session.beginTransaction();
+
+            List<User> authenticatedUser  = session.createCriteria(User.class).add(Restrictions.eq("email",email)).list();
+
+            session.getTransaction().commit();
+
+            return authenticatedUser != null && authenticatedUser.size()==0;
+
+        } catch (HibernateException ex) {
+            session.getTransaction().rollback();
+
+            ex.printStackTrace();
+            return false;
+        }
     }
 
 }

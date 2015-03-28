@@ -13,9 +13,12 @@ import java.util.List;
 public class MessageDAO {
 
     private static SessionFactory sessionFactory;
+    private static Session session;
+
 
     protected MessageDAO(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+        session = sessionFactory.openSession();
     }
 
 
@@ -25,7 +28,6 @@ public class MessageDAO {
 
 
     public static  boolean saveMessage(Message message) {
-        Session session = sessionFactory.openSession();
 
         try {
             session.beginTransaction();
@@ -33,17 +35,17 @@ public class MessageDAO {
             session.persist(message);
 
             session.getTransaction().commit();
+
             return true;
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
-            session.close();
+
             ex.printStackTrace();
             return false;
         }
     }
 
     public static List<Message> loadAllMessage() {
-        Session session = sessionFactory.openSession();
 
         try {
             session.beginTransaction();
@@ -54,7 +56,7 @@ public class MessageDAO {
             return messages;
         } catch (HibernateException ex) {
             session.getTransaction().rollback();
-            session.close();
+
             ex.printStackTrace();
             return null;
         }
