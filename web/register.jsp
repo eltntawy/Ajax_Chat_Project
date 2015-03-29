@@ -64,7 +64,7 @@
             <span id="fullNameFeedback" ></span>
           </div>
           <div class="form-group has-feedback">
-            <input id="email" sname="email" type="email" class="form-control" required="ture"  placeholder="Email" onkeyup="checkEmail()" />
+            <input id="email" name="email" type="email" class="form-control" required="ture"  placeholder="Email" onkeyup="checkEmail()" />
             <span  class="glyphicon glyphicon-envelope form-control-feedback"></span>
             <span id="emailFeedback"></span>
           </div>

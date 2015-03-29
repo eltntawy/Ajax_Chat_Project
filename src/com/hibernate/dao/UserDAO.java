@@ -1,9 +1,10 @@
 package com.hibernate.dao;
 
+import com.hibernate.SessionFactory;
 import com.hibernate.pojo.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Restrictions;
 
@@ -14,32 +15,27 @@ import java.util.List;
  */
 public class UserDAO {
 
-    private static SessionFactory sessionFactory;
-    private static Session session ;
-    protected UserDAO(SessionFactory sessionFactory) {
-
-        this.sessionFactory = sessionFactory;
-        session = sessionFactory.openSession();
-    }
-
-    public SessionFactory getSessionFactory(SessionFactory sessionFactory) {
-        return sessionFactory;
+    protected UserDAO() {
     }
 
 
     public static boolean saveNewUser(User user) {
 
+        Session session = SessionFactory.getSession();
+        Transaction trx = null;
 
         try {
-            session.beginTransaction();
+
+            trx = session.beginTransaction();
 
             session.persist(user);
 
-            session.getTransaction().commit();
+
+            if (!trx.isActive()) trx.commit();
 
             return true;
         } catch (HibernateException ex) {
-            session.getTransaction().rollback();
+            if (trx != null) trx.rollback();
 
             ex.printStackTrace();
             return false;
@@ -48,19 +44,23 @@ public class UserDAO {
 
     public static User authenticateUser(User user) {
 
+        Session session = SessionFactory.getSession();
+        Transaction trx = null;
 
         try {
-            session.beginTransaction();
+            synchronized (User.class) {
+                trx = session.beginTransaction();
 
-            User authenticatedUser  = (User) session.createCriteria(User.class).add(Example.create(user)).uniqueResult();
+                User authenticatedUser = (User) session.createCriteria(User.class).add(Example.create(user)).uniqueResult();
 
-            session.getTransaction().commit();
+                if (!trx.isActive()) trx.commit();
 
 
-            return authenticatedUser;
+                return authenticatedUser;
+            }
 
         } catch (HibernateException ex) {
-            session.getTransaction().rollback();
+            if (trx != null) trx.rollback();
 
             ex.printStackTrace();
             return null;
@@ -70,17 +70,24 @@ public class UserDAO {
 
 
     public static boolean isAvailableEmail(String email) {
+
+        Session session = SessionFactory.getSession();
+        Transaction trx = null;
         try {
-            session.beginTransaction();
 
-            List<User> authenticatedUser  = session.createCriteria(User.class).add(Restrictions.eq("email",email)).list();
+            synchronized (User.class) {
+                trx = session.getTransaction().isParticipating() ? session.getTransaction() : session.beginTransaction();
 
-            session.getTransaction().commit();
+                List<User> authenticatedUser = session.createCriteria(User.class).add(Restrictions.eq("email", email)).list();
 
-            return authenticatedUser != null && authenticatedUser.size()==0;
+
+                if (!trx.isActive()) trx.commit();
+
+                return authenticatedUser != null && authenticatedUser.size() == 0;
+            }
 
         } catch (HibernateException ex) {
-            session.getTransaction().rollback();
+            if (trx != null) trx.rollback();
 
             ex.printStackTrace();
             return false;

@@ -38,13 +38,12 @@
                 var messages = $("#chat-box").children();
 
                 messageId = messages[messages.length -1].id;
-                $("#chat-box").scrollTop;
             }
         }
 
         setInterval(function () {
             receiveMessages()
-        },5000);
+        }, 500);
 
     </script>
 
@@ -203,5 +202,14 @@
 
     <!-- AdminLTE for demo purposes -->
     <script src="${pageContext.request.contextPath}/dist/js/demo.js" type="text/javascript"></script>
+
+    <script type="application/javascript">
+        $(document).ready(function () {
+            $("#chat-box").animate({scrollTop: $("#chat-box").attr("scrollHeight") - $('#chat-box').height()}, 3);
+        })
+</script>
+
 </body>
+
+
 </html>

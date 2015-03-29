@@ -1,9 +1,7 @@
 package com.web.servlet;
 
 import com.hibernate.dao.DAOFactory;
-import com.hibernate.dao.UserDAO;
 import com.hibernate.pojo.User;
-import org.hibernate.SessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

@@ -2,17 +2,12 @@ package com.web.listener; /**
  * Created by eltntawy on 27/03/15.
  */
 
-import com.hibernate.dao.DAOFactory;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 
 @WebListener()
 public class StartHibernateListener implements ServletContextListener {
@@ -28,7 +23,7 @@ public class StartHibernateListener implements ServletContextListener {
          You can initialize servlet context related data here.
       */
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        DAOFactory.init(sessionFactory);
+        com.hibernate.SessionFactory.init(sessionFactory);
 
     }
 

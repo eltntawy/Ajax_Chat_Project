@@ -14,8 +14,8 @@ public class DAOFactory {
 
     public static void init(SessionFactory sessionFactory) {
         DAOFactory.sessionFactory = sessionFactory;
-        DAOFactory.userDAO = new UserDAO(sessionFactory);
-        DAOFactory.messageDAO = new MessageDAO(sessionFactory);
+        DAOFactory.userDAO = new UserDAO();
+        DAOFactory.messageDAO = new MessageDAO();
     }
 
     private DAOFactory () {}

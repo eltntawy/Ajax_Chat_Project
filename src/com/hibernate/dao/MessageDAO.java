@@ -5,6 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import org.hibernate.Transaction;
 import java.util.List;
 
 /**
@@ -12,13 +13,7 @@ import java.util.List;
  */
 public class MessageDAO {
 
-    private static SessionFactory sessionFactory;
-    private static Session session;
-
-
-    protected MessageDAO(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-        session = sessionFactory.openSession();
+    protected MessageDAO() {
     }
 
 
@@ -29,16 +24,22 @@ public class MessageDAO {
 
     public static  boolean saveMessage(Message message) {
 
+        Session session = com.hibernate.SessionFactory.getAjaxSession();
+        Transaction trx = null;
         try {
-            session.beginTransaction();
 
-            session.persist(message);
+            synchronized (MessageDAO.class) {
+                trx = session.getTransaction().isParticipating() ? session.getTransaction() : session.beginTransaction();
 
-            session.getTransaction().commit();
+                session.persist(message);
+
+
+                if (!trx.isActive()) trx.commit();
+            }
 
             return true;
         } catch (HibernateException ex) {
-            session.getTransaction().rollback();
+            trx.rollback();
 
             ex.printStackTrace();
             return false;
@@ -47,15 +48,21 @@ public class MessageDAO {
 
     public static List<Message> loadAllMessage() {
 
+        Session session = com.hibernate.SessionFactory.getAjaxSession();
+        Transaction trx = null;
         try {
-            session.beginTransaction();
 
-            List<Message> messages = session.createCriteria(Message.class).list();
+            synchronized (MessageDAO.class) {
+                trx = session.getTransaction().isParticipating() ? session.getTransaction() : session.beginTransaction();
 
-            session.getTransaction().commit();
-            return messages;
+                List<Message> messages = session.createCriteria(Message.class).list();
+
+                if (!trx.isActive()) trx.commit();
+                return messages;
+            }
+
         } catch (HibernateException ex) {
-            session.getTransaction().rollback();
+            if (trx != null) trx.rollback();
 
             ex.printStackTrace();
             return null;

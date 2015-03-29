@@ -5,7 +5,6 @@ package com.web.servlet;
 import com.hibernate.pojo.User;
 import com.hibernate.dao.DAOFactory;
 import com.hibernate.pojo.Message;
-import com.hibernate.pojo.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by eltntawy on 22/03/15.
@@ -56,19 +54,22 @@ public class ChatServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("ChatServlet : Ajax request update chat");
 
-        int messageId = Integer.parseInt(request.getParameter("messageId"));
-        StringBuilder messagesReturn = new StringBuilder();
+        try {
+            int messageId = Integer.parseInt(request.getParameter("messageId"));
+            StringBuilder messagesReturn = new StringBuilder();
 
-        List<Message> messageList = DAOFactory.getMessageDAO().loadAllMessage();
+            List<Message> messageList = DAOFactory.getMessageDAO().loadAllMessage();
 
-        if(messageList != null) {
-            for (Message msg : messageList) {
-                if (messageId < msg.getId())
-                    messagesReturn.append(getMessageHTML(msg));
+            if (messageList != null) {
+                for (Message msg : messageList) {
+                    if (messageId < msg.getId())
+                        messagesReturn.append(getMessageHTML(msg));
+                }
             }
+            response.getWriter().print(messagesReturn.toString());
+        }catch (NumberFormatException ex) {
+            ex.printStackTrace();
         }
-        response.getWriter().print(messagesReturn.toString());
-
 
     }
 
